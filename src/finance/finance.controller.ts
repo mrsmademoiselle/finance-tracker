@@ -1,27 +1,31 @@
 import {
-    Body,
     Controller,
-    Get,
-    MaxFileSizeValidator,
-    Param,
-    ParseFilePipe,
     Post,
-    UploadedFile,
     UseInterceptors,
+    Body,
+    UploadedFile,
+    ParseFilePipe,
+    MaxFileSizeValidator,
+    Get,
+    Param,
 } from '@nestjs/common'
-import { FinanceService } from './finance.service'
-
 import { FileInterceptor } from '@nestjs/platform-express'
-import { type CsvColumnMappings } from 'src/common/common.dto'
+
+import { FinanceService } from './finance.service.js'
 import {
+    CsvColumnMappings,
     ExecutionTypeWithAmounts,
     TopSpendingCategoryForMonth,
     AmountPerWeekday,
-} from './finance.model'
+} from '../core/index.js'
+import { CsvParserService } from '../csv-parser/csv-parser.service.js'
 
 @Controller('finance')
 export class FinanceController {
-    constructor(private readonly financeService: FinanceService) {}
+    constructor(
+        private readonly financeService: FinanceService,
+        private csvParsingService: CsvParserService
+    ) {}
 
     @Post('upload')
     @UseInterceptors(FileInterceptor('file'))
@@ -40,8 +44,7 @@ export class FinanceController {
             columnMappingsString
         ) as CsvColumnMappings
 
-        this.financeService.overrideCsvColumnNames(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        this.csvParsingService.overrideCsvColumnNames(
             `${process.env.CSV_FILE_UPLOAD_DESTINATION}/${file.filename}`,
             columnMappings
         )

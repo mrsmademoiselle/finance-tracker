@@ -1,3 +1,7 @@
+export type CsvColumnMappings = Partial<{
+    [K in keyof BankStatement]?: string
+}>
+
 export interface AmountPerWeekday {
     weekday: string
     totalAmount: number
@@ -12,12 +16,12 @@ export interface BankStatement {
     bank_number_owner?: string
     category?: string
 }
-export class ExecutionTypeWithAmounts {
+export interface ExecutionTypeWithAmounts {
     transaction_type: string
     totalAmount: number
 }
 
-export class TopSpendingCategoryForMonth {
+export interface TopSpendingCategoryForMonth {
     category: string
     totalAmount: number
 }

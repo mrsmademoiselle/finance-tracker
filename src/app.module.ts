@@ -1,11 +1,11 @@
 import { Module, OnApplicationBootstrap } from '@nestjs/common'
-import { AppController } from './app.controller'
-import { AppService } from './app.service'
-import { FinanceService } from './finance/finance.service'
-import { FinanceController } from './finance/finance.controller'
 import { MulterModule } from '@nestjs/platform-express'
-import { CsvParserService } from './csv-parser/csv-parser.service'
 import { ConfigModule } from '@nestjs/config'
+import { AppController } from './app.controller.js'
+import { AppService } from './app.service.js'
+import { CsvParserService } from './csv-parser/csv-parser.service.js'
+import { FinanceController } from './finance/finance.controller.js'
+import { FinanceService } from './finance/finance.service.js'
 
 @Module({
     imports: [
